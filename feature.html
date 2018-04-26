@@ -38,37 +38,39 @@
         <img class="paperclip" src="style/paperclip.png" alt="paperclip" />
         <div class="sidebar">
         <!-- insert your sidebar items here -->
-        <h3>Project Report</h3>
-        <h4>Want to see our report?</h4>
+        <h3>MFCC</h3>
+        <h4>Still confused about MFCC?</h4>
         <h5>20th April 2018</h5>
-        <p>Feel free to check our report!<br /><a href="https://drive.google.com/file/d/1CkY_YLVRyA_jF6eXMDAIkDxED7RcbMOb/view?usp=sharing">Click here</a></p>
+        <p>Here is a very nice blog giving a clear explanation how MFCC works!<br /><a href="http://practicalcryptography.com/miscellaneous/machine-learning/guide-mel-frequency-cepstral-coefficients-mfccs/">Click here</a></p>
         </div>
         <img class="paperclip" src="style/paperclip.png" alt="paperclip" />
         <div class="sidebar">
-          <h3>Project Code</h3>
-          <h4>Want to see our code?</h4>
+          <h3>Spectral features</h3>
+          <h4>Want to know more spectral features?</h4>
           <h5>20th April 2018</h5>
-          <p>If you would like to see our Matlab code, you can check them in our <a href="https://github.com/eeveeking/351">Github Repo</a>.</p>
+          <p>You can check this nice doc on several important spectral features. <br /><a href="http://docs.twoears.eu/en/latest/afe/available-processors/spectral-features/">Click here</a></p>
         </div>
         <img class="paperclip" src="style/paperclip.png" alt="paperclip" />
         <div class="sidebar">
           <h3>Dataset</h3>
-          <h5>1st July 2011</h5>
+          <h5>1st July 2015</h5>
           <p>Interested in our dataset? Want to do some cool stuff for music genre detection? You can find our dataset <a href="http://marsyas.info/">here</a>.</p>
         </div>
       </div>
       <div id="content">
         <!-- insert the page content here -->
         <h1>Feature Extraction</h1>
-        <p>The extraction and selection of the best parametric representation of song genres is an important task in the design of our genre detection system. Several features that we have considered and their backgrounds are discussed below.</p>
+        <p>The extraction and selection of the best parametric representation of song genres is almost the most important task in the design of our genre detection system. Several features that we have considered and their backgrounds are discussed below.</p>
 
         <h2>Timbre Features</h2>
-
+        <h3>Mel-Frequency Cepstrum coefficients</h3>
         <span class="center"><img src="img/MFCC_Flow2.JPG" alt="example graphic" height="200"/></span>
 
-        <p>Mel-Frequency Cepstrum coefficients (MFCC) - originally used in voice recognition tasks - have proved particularly useful in describing a song's timbre or tone quality. First, we analyze a song's timbre features. A compact representation would be provided by a set of mel-frequency cepstrum coefficients (MFCC), which are the results of a cosine transform of the real logarithm of the short-term energy spectrum expressed on a mel-frequency scale. The calculation of the MFCC includes the following steps:
+        <p>Mel-Frequency Cepstrum coefficients (MFCC) - originally used in voice recognition tasks - have proved particularly useful in describing a song's timbre or tone quality. First, we analyze a song's timbre features. A compact representation would be provided by a set of mel-frequency cepstrum coefficients (MFCC), which are the results of a cosine transform of the real logarithm of the short-term energy spectrum expressed on a mel-frequency scale. The calculation of the MFCC includes the following steps:</p>
+
         <h3>Pre-emphasis and Framing</h3>
-        Here, we pass the signal through a high pass filter,
+
+        <p>Here, we pass the signal through a high pass filter,
         \begin{equation}
           y[n] = x[n] - \alpha x[n-1]
         \end{equation}
@@ -76,7 +78,7 @@
         Where \(\alpha\) is typically \(0.95\) or \(0.97\).
         It was noted that higher frequencies are more important for signal disambiguation than lower frequencies. Preemphasis is good for SNR (signal to noise ratio) and potentially avoid the numerical problems of FFT on later stages.
   
-        After that, we need to split the signal into short-time frames. The rationale behind this step is that frequencies in a signal change over time, so in most cases it does not make sense to do the FFT over entire signal, which will lose information in time domain. We assume that a signal in frequency domain is stationary over a very short period of time \(t\), and it means that we choose our frame as a small interval of time of the song. (As suggested in literature, it would be good to set \(T_w\) as 25 and \(T_s\) as 10) Different parameter sets that we used are shown in the table below.
+        After that, we need to split the signal into short-time frames. The rationale behind this step is that frequencies in a signal change over time, so in most cases it does not make sense to do the FFT over entire signal, which will lose information in time domain. We assume that a signal in frequency domain is stationary over a very short period of time \(t\), and it means that we choose our frame as a small interval of time of the song. (As suggested in literature, it would be good to set \(T_w\) as 25 and \(T_s\) as 10) Different parameter sets that we used are shown in the table below.</p>
 
         <span class="center"><img src="img/table1.PNG" alt="example graphic" height="150"/></span>
 
@@ -101,12 +103,14 @@
         \end{equation}</p>
 
         <h3>Mel-frequency wrapping</h3>
+
         <p>The final step to computing filter banks is applying triangular filters, typically 20 or 40 filters, on a Mel-scale to the power spectrum to extract frequency bands. This step is necessary because human perception of frequency contents of sounds for speech signal does not follow a linear scale. Thus for each tone with an actual frequency, \(f\), measured in Hz, a subjective pitch is measured on Mel-scale. The mel-frequency scale is a linear frequency spacing below 1000 Hz and a logarithmic spacing above 1000Hz. As a reference point, the pitch of a 1 kHz tone, 40dB above the perceptual hearing threshold, is defined as 1000 mels. Therefore we can use the following approximate formula to compute the mels for a given frequency \(f\) in Hz. 
         \begin{equation}
           Mel(f) = 2595 * \log(1+\dfrac{f}{700})
         \end{equation}</p>
 
         <h3>MFCC Coefficients</h3>
+
         <p>It turns out that filter bank coefficients computed in the previous step are highly correlated, which could be problematic in our later machine learning algorithms. So we could reduce the dimensionality, and to decorrelate the filter bank coefficients by converting them to the time domain using the discrete cosine transform (DCT).
         The result is called the Mel Frequency Cepstrum Coefficients.
 
@@ -115,7 +119,7 @@
         \end{equation}
         Typically, literature suggests that 12 coefficients (2-13) is enough, and later coefficients, meaning fast changes in the filter bank, do not contribute much to the sound pattern detection. The first MFCC is discarded as it contains an offset value indicating loudness, so we also discard this value. 
 
-        A typical MFCC Mel frequency cepstrum coefficients plot of one example in our data set is shown in Figure</p>
+        A typical MFCC Mel frequency cepstrum coefficients plot of one example in our data set is shown below.</p>
 
         <span class="center"><img src="img/MFCC_fig.PNG" alt="example graphic" height="450"/></span>
 
@@ -135,11 +139,11 @@
 
         <span class="center"><img src="img/SDC.PNG" alt="example graphic" height="300"/></span>
 
-        <p>As proposed in several literatures, delta-cepstral features are widely used in speech and language recognition to add dynamic information to the static cepstral features. It interprets signal and captures features from the long duration speech samples, which solves limitations of traditional short time derivation of cepstral features. They also improve recognition accuracy by adding a characterization of temporal dependencies to the hidden-markov models (HMM) frames. Combination of MFCC and delta-cepstral features shows better performance in speech recognition as shown in. For a short-time cepstral sequence \(C[n]\), the delta-cepstral features are typically defined as
+        <p>As proposed in several literatures, delta-cepstral features are widely used in speech and language recognition to add dynamic information to the static cepstral features. It interprets signal and captures features from the long duration speech samples, which solves limitations of traditional short time derivation of cepstral features. Combination of MFCC and delta-cepstral features shows better performance in speech recognition as shown in several literatures. For a short-time cepstral sequence \(C[n]\), the delta-cepstral features are typically defined as
         \begin{equation}
           D[n] = C[n+m] - C[n-m],
         \end{equation}
-        where \(n\) is the index of the analysis frames and \(m\) is usually taken as \(2\) or \(3\) in practice. Double-delta cepstral features can be further defined in terms of a subsequent delta-operation on the delta-cepstral features. In more general cases, shifted delta cepstral (SDC) feature vectors are used as an extension of delta-cepstral coefficients. The procedure of calculating SDC feature vector is shown in Figure 3.
+        where \(n\) is the index of the analysis frames and \(m\) is usually taken as \(2\) or \(3\) in practice. Double-delta cepstral features can be further defined in terms of a subsequent delta-operation on the delta-cepstral features. In more general cases, shifted delta cepstral (SDC) feature vectors are used as an extension of delta-cepstral coefficients. The procedure of calculating SDC feature vector is shown in the above figure.
 
         Typically, SDC coefficients depend on four parameters, \(N\), \(d\), \(P\), \(k\), where \(N\) is the number of cepstral coefficients in one vector at each frame, \(d\) is the amount of lag for delta computation, \(P\) is amount of shift for next frame whose deltas are to be computed, and \(k\) is number of frame whose deltas are to be stacked. Suppose at given time \(t\), MFCC vector is given as 
         $$\textbf{c}(t) = [c_0 \quad c_1 \quad ... \quad c_{N-1}],$$
@@ -192,7 +196,7 @@
         <p>Spectral rolloff is defined as the Nth percentile of the power spectral distribution, where N is usually 85% or 95%. The rolloff point is the frequency below which the N% of the magnitude distribution is concentrated. The feature is not used in our final decision tree analysis, and the reason is elaborated in Discussion: Section.</p>
 
         <h2>Chord Features</h2>
-        <p>Besides the features listed above, we also thought about some mid-level features, like the chord features that will show the tonality of the song. We read Matthias Mauch's thesis. His "baseline" algorithm consists in:
+        <p>Besides the features listed above, we also thought about some mid-level features, like the chord features that will show the tonality of the song. We read <a href="https://ieeexplore.ieee.org/document/5256327/">Matthias Mauch's thesis</a>. His "baseline" algorithm consists in:
           <ul>
             <li>Extracting a STFT of the signal with rather large windows (in the hundreds of ms range).</li>
             <li>Mapping this to a constant-Q representation by upsampling and projection.</li>
